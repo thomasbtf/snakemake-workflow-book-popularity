@@ -1,4 +1,6 @@
 configfile: "config/config.yaml"
+
+
 pepfile: config["pepfile"]
 
 
@@ -10,7 +12,5 @@ include: "rules/common.smk"
 
 
 rule all:
-    input:
-
-
-
+    output:
+        touch("hello.world"),
