@@ -1,0 +1,14 @@
+*
+.DS_Store
+!.github
+!.github/**
+!.tests
+!.tests/**
+!config
+!config/**
+!workflow
+!workflow/**
+!.gitignore
+!.gitattributes
+!LICENSE
+!README.md
