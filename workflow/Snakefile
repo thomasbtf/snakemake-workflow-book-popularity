@@ -9,8 +9,9 @@ container: "docker://condaforge/mambaforge"
 
 
 include: "rules/common.smk"
+include: "rules/download.smk"
 
 
 rule all:
-    output:
-        touch("hello.world"),
+    input:
+        expand("results/dnb/MARC21/{isbn}.xml", isbn=get_isbns()),
