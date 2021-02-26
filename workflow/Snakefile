@@ -1,16 +1,16 @@
 configfile: "config/config.yaml"
+
+
 pepfile: config["pepfile"]
 
 
 # Allow users to fix the underlying OS via singularity.
-singularity: "docker://condaforge/mambaforge"
+container: "docker://condaforge/mambaforge"
 
 
 include: "rules/common.smk"
 
 
 rule all:
-    input:
-
-
-
+    output:
+        touch("hello.world"),
