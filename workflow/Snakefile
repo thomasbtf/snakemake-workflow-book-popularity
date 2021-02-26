@@ -14,4 +14,4 @@ include: "rules/download.smk"
 
 rule all:
     output:
-       touch("nothin")
+        touch("nothin"),
