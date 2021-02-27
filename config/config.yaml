@@ -1,1 +1,4 @@
 pepfile: config/pep/config.yaml
+
+# path to the dnb access token
+dnb_access_token: resources/dnb_access_token.txt
