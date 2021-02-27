@@ -53,7 +53,7 @@ rule extract_tags_and_subfields:
         "resources/bibliographic_data/{file}.mrc",
     output:
         "results/analysis/raw-data/tags-and-subfields/{file}.txt",
-        "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt"
+        "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt",
     log:
         "../logs/extract_tags_and_subfields/{file}.log",
     conda:
@@ -64,11 +64,13 @@ rule extract_tags_and_subfields:
 
 rule plot_tags:
     input:
-        tags = lambda wildcards: expand(
-            "results/analysis/raw-data/tags-and-subfields/{file}.txt", file=get_filenames(wildcards)
+        tags=lambda wildcards: expand(
+            "results/analysis/raw-data/tags-and-subfields/{file}.txt",
+            file=get_filenames(wildcards),
         ),
-        no_records = lambda wildcards: expand(
-            "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt", file=get_filenames(wildcards)
+        no_records=lambda wildcards: expand(
+            "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt",
+            file=get_filenames(wildcards),
         ),
     output:
         "results/plots/tag-overview.svg",
