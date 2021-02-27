@@ -1,0 +1,6 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - pip:
+    - pymarc==4.0.0

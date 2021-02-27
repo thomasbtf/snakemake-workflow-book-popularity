@@ -11,11 +11,13 @@ def get_dnb_access_token():
 
 
 def get_filenames(wildcards):
-    with checkpoints.get_checksum.get().output[0].open() as f:
+    with checkpoints.get_checksum_for_mrc_gz.get().output[0].open() as f:
         df = pd.read_fwf(f)
-    return list(
+    mrc_gz = list(
         df[df["Name der Datei"].str.endswith("mrc.gz")]["Name der Datei"].values
-    )[0]
+    )
+    file_names = [entry.replace(".mrc.gz", "") for entry in mrc_gz]
+    return file_names[0]
 
 
 def get_checksum_sha(wildcards):
