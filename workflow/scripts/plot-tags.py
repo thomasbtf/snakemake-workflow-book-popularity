@@ -3,29 +3,23 @@ sys.stderr = open(snakemake.log[0], "w")
 import altair as alt
 import pandas as pd
 
-from pymarc import MARCReader
-
-no_of_records = 0
+no_records = 0
 tag_list = []
 
 # iterate over all input files
-for mrc in snakemake.input:
+for tags_subfields in snakemake.input.tags:
     # open MARC record
-    with open(mrc, "rb") as fh:
-        reader = MARCReader(fh)
+    with open(tags_subfields, "r") as f:
+        for line in f:
+            tag_list.append(eval(line.strip()))
 
-        # iterate over all records
-        for record in reader:
-            no_of_records += 1
+for no in snakemake.input.no_records:
+    # open MARC record
+    with open(no, "r") as f:
+        for line in f:
+            print(line)
+            no_records += int(line.strip())
 
-            # extract tag and subfield of records
-            for tag in record.as_dict()["fields"]:
-                for key, value in tag.items():
-                    if type(value) is dict:
-                        for subvalue in value["subfields"][0]:
-                            tag_list.append((key, subvalue))
-                    else:
-                        tag_list.append((key, None))
 
 tags_df = pd.DataFrame(tag_list, columns=["Tag", "Subfield"])
 
@@ -54,6 +48,6 @@ text = (
 
 chart = bars + text
 
-chart = chart.properties(title="Total records: {}".format(no_of_records))
+chart = chart.properties(title="Total records: {}".format(no_records))
 
 chart.save(snakemake.output[0])

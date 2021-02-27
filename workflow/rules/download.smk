@@ -48,21 +48,27 @@ rule uncompress_mrc_gz:
         "gzip -dkc {input} > {output}"
 
 
-rule parse_mrc:
+rule extract_tags_and_subfields:
     input:
-        "resources/bibliographic_data/dnb_all_dnbmarc_20201013-1.mrc",
+        "resources/bibliographic_data/{file}.mrc",
+    output:
+        "results/analysis/raw-data/tags-and-subfields/{file}.txt",
+        "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt"
     log:
-        "../logs/pymarc.log",
+        "../logs/extract_tags_and_subfields/{file}.log",
     conda:
         "../envs/pymarc.yaml"
     script:
-        "../scripts/parse-pymarc.py"
+        "../scripts/extract-tags-and-subfields.py"
 
 
 rule plot_tags:
     input:
-        lambda wildcards: expand(
-            "resources/bibliographic_data/{file}.mrc", file=get_filenames(wildcards)
+        tags = lambda wildcards: expand(
+            "results/analysis/raw-data/tags-and-subfields/{file}.txt", file=get_filenames(wildcards)
+        ),
+        no_records = lambda wildcards: expand(
+            "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt", file=get_filenames(wildcards)
         ),
     output:
         "results/plots/tag-overview.svg",
