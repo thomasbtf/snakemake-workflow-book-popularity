@@ -37,11 +37,11 @@ rule get_bibliographic_data:
 
 rule uncompress_mrc_gz:
     input:
-        "resources/bibliographic_data/{file}.mrc.gz"
+        "resources/bibliographic_data/{file}.mrc.gz",
     output:
         "resources/bibliographic_data/{file}.mrc",
     log:
-        "../logs/unzip/{file}.log"
+        "../logs/unzip/{file}.log",
     conda:
         "../envs/utils.yaml"
     shell:
@@ -52,19 +52,22 @@ rule parse_mrc:
     input:
         "resources/bibliographic_data/dnb_all_dnbmarc_20201013-1.mrc",
     log:
-        "../logs/pymarc.log"
+        "../logs/pymarc.log",
     conda:
         "../envs/pymarc.yaml"
     script:
         "../scripts/parse-pymarc.py"
 
+
 rule plot_tags:
     input:
-        lambda wildcards: expand("resources/bibliographic_data/{file}.mrc", file = get_filenames(wildcards)),
+        lambda wildcards: expand(
+            "resources/bibliographic_data/{file}.mrc", file=get_filenames(wildcards)
+        ),
     output:
         "results/plots/tag-overview.svg",
     log:
-        "../logs/plots/tag-overview.log"
+        "../logs/plots/tag-overview.log",
     conda:
         "../envs/plotting.yaml"
     script:

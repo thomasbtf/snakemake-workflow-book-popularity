@@ -14,6 +14,6 @@ include: "rules/download.smk"
 
 rule all:
     # input:
-        # lambda wildcards: expand("resources/bibliographic_data/{file}.mrc.gz", file = get_filenames(wildcards))
+    # lambda wildcards: expand("resources/bibliographic_data/{file}.mrc.gz", file = get_filenames(wildcards))
     output:
-        touch("do.nothing")
+        touch("do.nothing"),
