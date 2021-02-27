@@ -12,7 +12,7 @@ for mrc in snakemake.input:
         reader = MARCReader(fh)
 
         # iterate over all records
-        for record in reader, 100:
+        for record in reader:
             no_records += 1
 
             # extract tag and subfield of records
