@@ -56,6 +56,7 @@ rule extract_tags_and_subfields:
         "results/analysis/raw-data/tags-and-subfields/records_in_{file}.txt",
     log:
         "../logs/extract_tags_and_subfields/{file}.log",
+    threads: 8
     conda:
         "../envs/pymarc.yaml"
     script:
