@@ -17,7 +17,7 @@ def get_filenames(wildcards):
         df[df["Name der Datei"].str.endswith("mrc.gz")]["Name der Datei"].values
     )
     file_names = [entry.replace(".mrc.gz", "") for entry in mrc_gz]
-    return file_names[0]
+    return file_names
 
 
 def get_checksum_sha(wildcards):
