@@ -29,7 +29,7 @@ def get_tags_and_subfields(sm_input, sm_output):
 
 
 if __name__ == "__main__":
-    # sys.stderr = open(snakemake.log[0], "w")
+    sys.stderr = open(snakemake.log[0], "w")
     sm_input = snakemake.input
     sm_output = snakemake.output
 
