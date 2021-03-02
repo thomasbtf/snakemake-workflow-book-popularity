@@ -59,7 +59,7 @@ rule extract_tags_and_subfields:
     conda:
         "../envs/pymarc.yaml"
     script:
-        "../scripts/extract-tags-and-subfields-copy.py"
+        "../scripts/extract-tags-and-subfields.py"
 
 
 rule plot_tags:
