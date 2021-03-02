@@ -9,7 +9,7 @@ container: "docker://condaforge/mambaforge"
 
 
 include: "rules/common.smk"
-include: "rules/download.smk"
+include: "rules/ref.smk"
 
 
 rule all:
