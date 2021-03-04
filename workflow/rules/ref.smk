@@ -78,5 +78,6 @@ rule plot_tags:
         "logs/plots/tag-overview.log",
     conda:
         "../envs/plotting.yaml"
+    threads: 4
     script:
         "../scripts/plot-tags.py"
