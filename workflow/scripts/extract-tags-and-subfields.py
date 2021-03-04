@@ -1,61 +1,35 @@
-from multiprocessing import cpu_count, Manager
-from joblib import Parallel, delayed
-from tqdm import tqdm 
+sys.stderr = open(snakemake.log[0], "w")
 
-from pymarc import MARCReader
+from pymarc import MARCReader, record
+from tqdm import tqdm
 
+import itertools
 
-class Counter(object):
-    def __init__(self, manager, initval=0):
-        self.val = manager.Value("i", initval)
-        self.lock = manager.Lock()
+def single_loop(sm_input, sm_output):
 
-    def increment(self):
-        with self.lock:
-            self.val.value += 1
+    no_records = 0
 
-    def value(self):
-        with self.lock:
-            return self.val.value
+    with open(sm_input[0], "rb") as marc_file_handle:
+        reader = tqdm(MARCReader(marc_file_handle))
 
-
-def get_tags(record, no_records):
-
-    no_records.increment()
-
-    # extract tag and subfield of records
-    for tag in record.as_dict()["fields"]:
-        for key, value in tag.items():
-            if type(value) is dict:
-                for subvalue in value["subfields"][0]:
-                    tag_list.append((key, subvalue))
-            else:
-                tag_list.append((key, None))
-
+        with open(sm_output[0], "w") as output:
+            for record in reader:
+                no_records += 1
+                for tag in record.as_dict()["fields"]:
+                    for key, value in tag.items():
+                        if type(value) is dict:
+                            for subvalue in value["subfields"][0]:
+                                output.write(str((key, subvalue))+"\n")
+                        else:
+                            output.write(str((key, None))+"\n")
+    
+    with open(sm_output[1], "w") as output:
+        output.write(str(no_records)+"\n")
 
 if __name__ == "__main__":
-    sys.stderr = open(snakemake.log[0], "w")
     sm_input = snakemake.input
     sm_output = snakemake.output
-    num_cores = snakemake.threads
+    # sm_input = ["resources/bibliographic_data/dnb_all_dnbmarc_20210213-1.mrc"]
+    # sm_output = ["results/analysis/tags-subfields-combos/dnb_all_dnbmarc_20201013-1-XXX.txt", "results/analysis/tags-subfields-combos/records_in_dnb_all_dnbmarc_20201013-1-XXX.txt"]
 
-    # sm_input = ["resources/bibliographic_data/dnb_all_dnbmarc_20201013-1.mrc"]
-    # sm_output = ["results/analysis/raw-data/tags-and-subfields/dnb_all_dnbmarc_20201013-1.txt", "results/analysis/raw-data/tags-and-subfields/records_in_dnb_all_dnbmarc_20201013-1.txt"]
-    # num_cores = cpu_count()
-
-    with Manager() as manager:
-        no_records = Counter(manager, 0)
-        tag_list = manager.list()
-
-        with open(sm_input[0], "rb") as marc_file_handle:
-            Parallel(n_jobs=num_cores)(
-                delayed(get_tags)(record, no_records)
-                for record in tqdm(MARCReader(marc_file_handle))
-            )
-
-        with open(sm_output[0], "w") as f:
-            for entry in tag_list:
-                f.write(str(entry) + "\n")
-
-        with open(sm_output[1], "w") as f:
-            f.write(str(no_records.value()))
+    single_loop(sm_input, sm_output)
