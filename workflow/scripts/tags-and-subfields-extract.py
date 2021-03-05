@@ -5,6 +5,7 @@ from tqdm import tqdm
 
 import itertools
 
+
 def single_loop(sm_input, sm_output):
 
     no_records = 0
@@ -19,12 +20,13 @@ def single_loop(sm_input, sm_output):
                     for key, value in tag.items():
                         if type(value) is dict:
                             for subvalue in value["subfields"][0]:
-                                output.write(str((key, subvalue))+"\n")
+                                output.write(str((key, subvalue)) + "\n")
                         else:
-                            output.write(str((key, None))+"\n")
-    
+                            output.write(str((key, None)) + "\n")
+
     with open(sm_output[1], "w") as output:
-        output.write(str(no_records)+"\n")
+        output.write(str(no_records) + "\n")
+
 
 if __name__ == "__main__":
     sm_input = snakemake.input

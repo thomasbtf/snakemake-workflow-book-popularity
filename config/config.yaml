@@ -2,3 +2,25 @@ pepfile: config/pep/config.yaml
 
 # path to the dnb access token
 dnb_access_token: resources/dnb_access_token.txt
+
+tag-subfields:
+  - 001, None # Kontrollnummer
+  - 003, None # Kontrollnummer-Identifier
+  - 005, None # Datum und Zeit der letzten Transaktion
+  - 007, None # physischen Beschreibung
+  - 008, None # Datum der Ersterfassung
+  - 016, 2 # Kontrollnummer der nationalbibliografischen Agentur
+  - 035, a # System-Kontrollnummer
+  - 040, a # Katalogisierungsquelle
+  - 044, c # Ländercode der veröffentlichenden/herstellenden Stelle
+  - 245, a # Titelangabe
+  - 300, a # Umfang
+  - 336, a # Inhaltstyp
+  - 337, a # Medientyp
+  - 338, a # Datenträgertyp
+  - 653, a # Indexierungsterm - nicht normiert
+  - 850, a # Besitzende Institution
+  - 856, a # (Elektronische Adresse und Zugriff
+  - 883, 8 # Herkunft der Metadaten
+
+  - 020, a # ISBN - 10,762,366 von 22,990,035
