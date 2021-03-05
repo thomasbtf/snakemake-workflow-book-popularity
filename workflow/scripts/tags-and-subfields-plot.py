@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def parse_txt(tags_subfields_txt):
     print("Parsing", tags_subfields_txt)
-    
+
     sub_dict = {}
     with open(tags_subfields_txt, "r") as f:
         for line in f:
@@ -22,7 +22,8 @@ def parse_txt(tags_subfields_txt):
     print("Finished", tags_subfields_txt)
     return sub_dict
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     tag_dict = {}
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
@@ -44,12 +45,14 @@ if __name__=="__main__":
             for line in f:
                 no_records += int(line.strip())
 
-    tags_df = pd.DataFrame({"Tag-Subfield" : tag_dict.keys(), "Count": tag_dict.values()})
-    tags_df['Tag'] = tags_df["Tag-Subfield"].apply(lambda x: x[0])
-    
+    tags_df = pd.DataFrame(
+        {"Tag-Subfield": tag_dict.keys(), "Count": tag_dict.values()}
+    )
+    tags_df["Tag"] = tags_df["Tag-Subfield"].apply(lambda x: x[0])
+
     print("No. of Tag-Subfield Combinations", len(tags_df))
 
-    print('Plotting...')
+    print("Plotting...")
 
     bars = (
         alt.Chart(tags_df)
@@ -58,7 +61,6 @@ if __name__=="__main__":
             x=alt.X("Count:Q", stack="zero"),
             y=alt.Y("Tag-Subfield:N"),
             color=alt.Color("Tag"),
-
         )
     )
 

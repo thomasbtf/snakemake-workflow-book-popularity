@@ -8,8 +8,10 @@ pepfile: config["pepfile"]
 container: "docker://condaforge/mambaforge"
 
 
-include: "rules/common.smk"
-include: "rules/ref.smk"
+include: "rules/_common.smk"
+include: "rules/_ref.smk"
+include: "rules/understanding.smk"
+include: "rules/data_acquisition.smk"
 
 
 rule all:
