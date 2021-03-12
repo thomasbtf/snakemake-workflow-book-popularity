@@ -38,10 +38,14 @@ def get_blurbs_to_download(path_to_link_csv, path_to_summary_file, outdir, max_t
         # start threads
         print("Start submitting jobs.", file=sys.stderr)
         futures = []
-        with ThreadPoolExecutor(max_workers=max_threads) as executor, open(path_to_summary_file, "w") as summary_writer:
-            for isbn, link in tqdm(csv_reader, mininterval = 1):
+        with ThreadPoolExecutor(max_workers=max_threads) as executor, open(
+            path_to_summary_file, "w"
+        ) as summary_writer:
+            for isbn, link in tqdm(csv_reader, mininterval=1):
                 if "http://deposit.dnb.de/cgi-bin" in link:
-                    futures.append(executor.submit(download_and_save_blurb, isbn, link, outdir))
+                    futures.append(
+                        executor.submit(download_and_save_blurb, isbn, link, outdir)
+                    )
 
             # save results as they are completed to the summary file
             print("Finished submitting jobs. Waiting for results.", file=sys.stderr)
@@ -75,4 +79,7 @@ if __name__ == "__main__":
         max_threads,
     )
 
-    print("\nCode completed in {} sec(s).".format(time.perf_counter() - t), file=sys.stderr)
+    print(
+        "\nCode completed in {} sec(s).".format(time.perf_counter() - t),
+        file=sys.stderr,
+    )

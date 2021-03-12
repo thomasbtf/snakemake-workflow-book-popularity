@@ -16,4 +16,7 @@ include: "rules/data_acquisition.smk"
 
 rule all:
     input:
-        lambda wildcards: expand("data/blurbs/_parsed-blurbs-from-{mrcfile}.tsv", mrcfile = get_filenames(wildcards))
+        lambda wildcards: expand(
+            "data/blurbs/_parsed-blurbs-from-{mrcfile}.tsv",
+            mrcfile=get_filenames(wildcards),
+        ),

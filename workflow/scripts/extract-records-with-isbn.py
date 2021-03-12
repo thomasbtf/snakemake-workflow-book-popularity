@@ -9,16 +9,19 @@ from tqdm import tqdm
 def extract_records_with_isbn(in_mrc, out_csv, out_uris):
 
     # iterator for dnb marc file
-    with open(in_mrc, "rb") as marc_file_handle, open(out_csv, "wb") as csv_handle, open(out_uris, "w") as uri_handle:
-        reader = tqdm(MARCReader(marc_file_handle), mininterval = 30)
-        
+    with open(in_mrc, "rb") as marc_file_handle, open(
+        out_csv, "wb"
+    ) as csv_handle, open(out_uris, "w") as uri_handle:
+        reader = tqdm(MARCReader(marc_file_handle), mininterval=30)
+
         # iterate over records in iterator
         for record in reader:
             # check if records has isbn
             if record.isbn():
                 # save the record in xml
                 csv_handle.write(
-                    ET.tostring(record_to_xml_node(record), encoding="utf-8") + "\n".encode('utf-8')
+                    ET.tostring(record_to_xml_node(record), encoding="utf-8")
+                    + "\n".encode("utf-8")
                 )
 
                 # extract links to parse from record
@@ -32,6 +35,4 @@ if __name__ == "__main__":
     path_to_mrc_xml = snakemake.output.xmls
     path_to_uri_csv = snakemake.output.uris
 
-    extract_records_with_isbn(
-        path_to_mrc_file, path_to_mrc_xml, path_to_uri_csv
-    )
+    extract_records_with_isbn(path_to_mrc_file, path_to_mrc_xml, path_to_uri_csv)

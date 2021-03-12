@@ -11,7 +11,7 @@ def single_loop(sm_input, sm_output):
     no_records = 0
 
     with open(sm_input[0], "rb") as marc_file_handle:
-        reader = tqdm(MARCReader(marc_file_handle), mininterval = 30)
+        reader = tqdm(MARCReader(marc_file_handle), mininterval=30)
 
         with open(sm_output[0], "w") as output:
             for record in reader:

@@ -3,7 +3,7 @@ rule extract_records_with_isbn:
         "resources/bibliographic_data/{mrcfile}.mrc",
     output:
         xmls="data/raw-records/isbn-{mrcfile}.xml",
-        uris="data/URIs/_to-parse-from-{mrcfile}.tsv"
+        uris="data/URIs/_to-parse-from-{mrcfile}.tsv",
     log:
         "logs/extract-records-with-isbn/{mrcfile}.log",
     conda:
@@ -21,7 +21,7 @@ rule get_blurbs:
         outdir=lambda w, output: os.path.dirname(output[0]),
     threads: 4
     log:
-        "logs/get-blurbs/{mrcfile}.log"
+        "logs/get-blurbs/{mrcfile}.log",
     conda:
         "../envs/beautifulsoup.yaml"
     script:
