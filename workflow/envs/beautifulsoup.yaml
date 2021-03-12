@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - beautifulsoup4 = 4.9.3
+  - tqdm = 4.58.0
+  - pip:
+    - lxml == 4.6.2
