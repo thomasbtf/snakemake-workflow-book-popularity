@@ -1,6 +1,7 @@
 import pandas as pd
 import csv
 
+
 def get_isbns():
     return list(pep.sample_table["sample_name"].values)
 
@@ -29,16 +30,23 @@ def get_blurbs(wildcards):
     mrcfiles = get_filenames(wildcards)
 
     for downloaded_mrcfile in mrcfiles:
-        with checkpoints.extract_records_with_isbn.get(mrcfile=downloaded_mrcfile).output.uris.open() as f:
-            
+        with checkpoints.extract_records_with_isbn.get(
+            mrcfile=downloaded_mrcfile
+        ).output.uris.open() as f:
+
             csv_reader = csv.reader(f, delimiter="\t")
             for isbn, link in csv_reader:
                 if "http://deposit.dnb.de/cgi-bin" in link:
                     mrcfile_list.append(downloaded_mrcfile)
                     isbn_list.append(isbn)
                     link_list.append(link)
-    
-    pattern = expand("data/blurbs/{mrcfile}/{isbn}~@~{link}.txt", zip, mrcfile=mrcfile_list, isbn=isbn_list, link=link_list)
+
+    pattern = expand(
+        "data/blurbs/{mrcfile}/{isbn}~@~{link}.txt",
+        zip,
+        mrcfile=mrcfile_list,
+        isbn=isbn_list,
+        link=link_list,
+    )
 
     return pattern
-

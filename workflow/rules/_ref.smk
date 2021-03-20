@@ -11,4 +11,3 @@ rule get_mrc_record_via_opi:
         "curl -sSL -o {output} 'http://services.dnb.de/sru/dnb?version=1.1&"
         "operation=searchRetrieve&query=isbn%3D{wildcards.isbn}&recordSchema="
         "MARC21-xml&accessToken={params.access_token}' "
-

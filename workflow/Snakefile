@@ -17,4 +17,4 @@ include: "rules/data_acquisition.smk"
 
 rule all:
     input:
-        get_blurbs
+        get_blurbs,

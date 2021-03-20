@@ -37,9 +37,9 @@ checkpoint extract_records_with_isbn:
 
 rule get_blurb_from_DNB:
     output:
-        "data/blurbs/{mrcfile}/{isbn}~@~{link}.txt",   
+        "data/blurbs/{mrcfile}/{isbn}~@~{link}.txt",
     log:
-        "logs/get-blurb-from-DNB/{mrcfile}/{isbn}~@~{link}.log"
+        "logs/get-blurb-from-DNB/{mrcfile}/{isbn}~@~{link}.log",
     conda:
         "../envs/beautifulsoup.yaml"
     script:
