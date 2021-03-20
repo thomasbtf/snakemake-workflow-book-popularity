@@ -1,5 +1,5 @@
 import pandas as pd
-
+import csv
 
 def get_isbns():
     return list(pep.sample_table["sample_name"].values)
@@ -20,9 +20,25 @@ def get_filenames(wildcards):
     return file_names
 
 
-def get_checksum_sha(wildcards):
-    with checkpoints.get_checksum.get().output[0].open() as f:
-        df = pd.read_fwf(f)
-    return df[df["Name der Datei"] == wildcards.file][
-        "Pruefsumme der bereitgestellten Dateien gemaess dem Standard SHA256"
-    ]
+def get_blurbs(wildcards):
+
+    mrcfile_list = []
+    isbn_list = []
+    link_list = []
+
+    mrcfiles = get_filenames(wildcards)
+
+    for downloaded_mrcfile in mrcfiles:
+        with checkpoints.extract_records_with_isbn.get(mrcfile=downloaded_mrcfile).output.uris.open() as f:
+            
+            csv_reader = csv.reader(f, delimiter="\t")
+            for isbn, link in csv_reader:
+                if "http://deposit.dnb.de/cgi-bin" in link:
+                    mrcfile_list.append(downloaded_mrcfile)
+                    isbn_list.append(isbn)
+                    link_list.append(link)
+    
+    pattern = expand("data/blurbs/{mrcfile}/{isbn}~@~{link}.txt", zip, mrcfile=mrcfile_list, isbn=isbn_list, link=link_list)
+
+    return pattern
+
